@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
-const API_KEY = 'SUA_API_KEY_AQUI';
+const API_KEY = '80bf486604bc478b984192916250405'; // Substitua pela chave da WeatherAPI
 
 export default function App() {
   const [city, setCity] = useState('Fortaleza');
@@ -13,7 +13,7 @@ export default function App() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=pt_br`
+        `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${cityName}&lang=pt`
       );
       setWeather(response.data);
     } catch (error) {
@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🌦️ App do Clima</Text>
+      <Text style={styles.title}>🌦️ Clima Native</Text>
       <TextInput
         style={styles.input}
         placeholder="Digite a cidade"
@@ -42,9 +42,9 @@ export default function App() {
         <ActivityIndicator size="large" color="#000" />
       ) : weather ? (
         <View style={styles.info}>
-          <Text style={styles.city}>{weather.name}</Text>
-          <Text style={styles.temp}>{weather.main.temp}°C</Text>
-          <Text style={styles.desc}>{weather.weather[0].description}</Text>
+          <Text style={styles.city}>{weather.location.name}</Text>
+          <Text style={styles.temp}>{weather.current.temp_c}°C</Text>
+          <Text style={styles.desc}>{weather.current.condition.text}</Text>
         </View>
       ) : (
         <Text style={styles.error}>Cidade não encontrada</Text>
